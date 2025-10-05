@@ -1,0 +1,444 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model audit_logs {
+  id          Int        @id @default(autoincrement())
+  company_id  Int?
+  user_type   String     @db.VarChar(50)
+  user_id     Int
+  action      String     @db.VarChar(100)
+  entity_type String?    @db.VarChar(100)
+  entity_id   Int?
+  details     Json?
+  ip_address  String?    @db.Inet
+  created_at  DateTime?  @default(now()) @db.Timestamp(6)
+  companies   companies? @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([company_id], map: "idx_audit_logs_company")
+  @@index([created_at], map: "idx_audit_logs_created")
+}
+
+model certificates {
+  id                 Int       @id @default(autoincrement())
+  company_id         Int
+  employee_id        Int
+  course_id          Int
+  certificate_number String    @unique @db.VarChar(100)
+  issue_date         DateTime  @db.Date
+  expiry_date        DateTime? @db.Date
+  certificate_url    String?   @db.VarChar(1000)
+  created_at         DateTime? @default(now()) @db.Timestamp(6)
+  companies          companies @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  courses            courses   @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  employees          employees @relation(fields: [employee_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([company_id], map: "idx_certificates_company")
+  @@index([employee_id], map: "idx_certificates_employee")
+}
+
+model companies {
+  id                      Int                  @id @default(autoincrement())
+  name                    String               @db.VarChar(255)
+  subdomain               String               @unique @db.VarChar(100)
+  logo_url                String?              @db.VarChar(500)
+  subscription_plan_id    Int?
+  subscription_status     String?              @default("active") @db.VarChar(50)
+  subscription_start_date DateTime             @db.Date
+  subscription_end_date   DateTime?            @db.Date
+  max_employees           Int?
+  contact_email           String               @db.VarChar(255)
+  contact_phone           String?              @db.VarChar(50)
+  created_at              DateTime?            @default(now()) @db.Timestamp(6)
+  updated_at              DateTime?            @default(now()) @db.Timestamp(6)
+  settings                Json?
+  audit_logs              audit_logs[]
+  certificates            certificates[]
+  subscription_plans      subscription_plans?  @relation(fields: [subscription_plan_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  company_admins          company_admins[]
+  company_statistics      company_statistics[]
+  course_categories       course_categories[]
+  courses                 courses[]
+  departments             departments[]
+  employee_groups         employee_groups[]
+  employees               employees[]
+  notifications           notifications[]
+  tests                   tests[]
+
+  @@index([subdomain], map: "idx_companies_subdomain")
+  @@index([subscription_plan_id], map: "idx_companies_subscription")
+}
+
+model company_admins {
+  id                 Int                  @id @default(autoincrement())
+  company_id         Int
+  email              String               @db.VarChar(255)
+  password_hash      String               @db.VarChar(255)
+  full_name          String               @db.VarChar(255)
+  role               String?              @default("admin") @db.VarChar(50)
+  permissions        Json?
+  is_active          Boolean?             @default(true)
+  created_at         DateTime?            @default(now()) @db.Timestamp(6)
+  last_login         DateTime?            @db.Timestamp(6)
+  companies          companies            @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  course_enrollments course_enrollments[]
+  courses            courses[]
+  tests              tests[]
+
+  @@unique([company_id, email])
+  @@index([company_id], map: "idx_company_admins_company")
+  @@index([email], map: "idx_company_admins_email")
+}
+
+model company_statistics {
+  id                Int       @id @default(autoincrement())
+  company_id        Int
+  stat_date         DateTime  @db.Date
+  total_employees   Int?      @default(0)
+  active_employees  Int?      @default(0)
+  total_courses     Int?      @default(0)
+  published_courses Int?      @default(0)
+  total_tests       Int?      @default(0)
+  total_enrollments Int?      @default(0)
+  completed_courses Int?      @default(0)
+  storage_used_gb   Decimal?  @default(0) @db.Decimal(10, 2)
+  companies         companies @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([company_id, stat_date])
+  @@index([company_id], map: "idx_company_stats_company")
+  @@index([stat_date], map: "idx_company_stats_date")
+}
+
+model course_categories {
+  id                      Int                 @id @default(autoincrement())
+  company_id              Int
+  name                    String              @db.VarChar(255)
+  parent_category_id      Int?
+  companies               companies           @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  course_categories       course_categories?  @relation("course_categoriesTocourse_categories", fields: [parent_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_course_categories course_categories[] @relation("course_categoriesTocourse_categories")
+
+  @@unique([company_id, name])
+}
+
+model course_enrollments {
+  id                 Int               @id @default(autoincrement())
+  course_id          Int
+  employee_id        Int
+  assigned_by        Int?
+  assigned_at        DateTime?         @default(now()) @db.Timestamp(6)
+  deadline           DateTime?         @db.Date
+  status             String?           @default("not_started") @db.VarChar(50)
+  started_at         DateTime?         @db.Timestamp(6)
+  completed_at       DateTime?         @db.Timestamp(6)
+  completion_percent Decimal?          @default(0) @db.Decimal(5, 2)
+  company_admins     company_admins?   @relation(fields: [assigned_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  courses            courses           @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  employees          employees         @relation(fields: [employee_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  lesson_progress    lesson_progress[]
+
+  @@unique([course_id, employee_id])
+  @@index([course_id], map: "idx_enrollments_course")
+  @@index([employee_id], map: "idx_enrollments_employee")
+  @@index([status], map: "idx_enrollments_status")
+}
+
+model course_modules {
+  id           Int       @id @default(autoincrement())
+  course_id    Int
+  title        String    @db.VarChar(500)
+  description  String?
+  order_index  Int
+  is_published Boolean?  @default(false)
+  created_at   DateTime? @default(now()) @db.Timestamp(6)
+  courses      courses   @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  lessons      lessons[]
+  tests        tests[]
+
+  @@index([course_id], map: "idx_course_modules_course")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model course_reviews {
+  id          Int       @id @default(autoincrement())
+  course_id   Int
+  employee_id Int
+  rating      Int?
+  review_text String?
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  courses     courses   @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  employees   employees @relation(fields: [employee_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([course_id, employee_id])
+  @@index([course_id], map: "idx_course_reviews_course")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model courses {
+  id                 Int                  @id @default(autoincrement())
+  company_id         Int
+  title              String               @db.VarChar(500)
+  description        String?
+  cover_image_url    String?              @db.VarChar(500)
+  category_id        Int?
+  difficulty_level   String?              @db.VarChar(50)
+  estimated_hours    Decimal?             @db.Decimal(5, 2)
+  is_published       Boolean?             @default(false)
+  is_mandatory       Boolean?             @default(false)
+  created_by         Int?
+  created_at         DateTime?            @default(now()) @db.Timestamp(6)
+  updated_at         DateTime?            @default(now()) @db.Timestamp(6)
+  certificates       certificates[]
+  course_enrollments course_enrollments[]
+  course_modules     course_modules[]
+  course_reviews     course_reviews[]
+  companies          companies            @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  company_admins     company_admins?      @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tests              tests[]
+
+  @@index([category_id], map: "idx_courses_category")
+  @@index([company_id], map: "idx_courses_company")
+}
+
+model departments {
+  id                                             Int           @id @default(autoincrement())
+  company_id                                     Int
+  name                                           String        @db.VarChar(255)
+  parent_department_id                           Int?
+  manager_id                                     Int?
+  created_at                                     DateTime?     @default(now()) @db.Timestamp(6)
+  companies                                      companies     @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  employees_departments_manager_idToemployees    employees?    @relation("departments_manager_idToemployees", fields: [manager_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  departments                                    departments?  @relation("departmentsTodepartments", fields: [parent_department_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_departments                              departments[] @relation("departmentsTodepartments")
+  employees_employees_department_idTodepartments employees[]   @relation("employees_department_idTodepartments")
+
+  @@unique([company_id, name])
+  @@index([company_id], map: "idx_departments_company")
+}
+
+model employee_group_members {
+  group_id        Int
+  employee_id     Int
+  added_at        DateTime?       @default(now()) @db.Timestamp(6)
+  employees       employees       @relation(fields: [employee_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  employee_groups employee_groups @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([group_id, employee_id])
+}
+
+model employee_groups {
+  id                     Int                      @id @default(autoincrement())
+  company_id             Int
+  name                   String                   @db.VarChar(255)
+  description            String?
+  created_at             DateTime?                @default(now()) @db.Timestamp(6)
+  employee_group_members employee_group_members[]
+  companies              companies                @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([company_id, name])
+}
+
+model employees {
+  id                                               Int                      @id @default(autoincrement())
+  company_id                                       Int
+  email                                            String                   @db.VarChar(255)
+  password_hash                                    String                   @db.VarChar(255)
+  full_name                                        String                   @db.VarChar(255)
+  position                                         String?                  @db.VarChar(255)
+  department_id                                    Int?
+  avatar_url                                       String?                  @db.VarChar(500)
+  hire_date                                        DateTime?                @db.Date
+  is_active                                        Boolean?                 @default(true)
+  created_at                                       DateTime?                @default(now()) @db.Timestamp(6)
+  last_login                                       DateTime?                @db.Timestamp(6)
+  certificates                                     certificates[]
+  course_enrollments                               course_enrollments[]
+  course_reviews                                   course_reviews[]
+  departments_departments_manager_idToemployees    departments[]            @relation("departments_manager_idToemployees")
+  employee_group_members                           employee_group_members[]
+  companies                                        companies                @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  departments_employees_department_idTodepartments departments?             @relation("employees_department_idTodepartments", fields: [department_id], references: [id], onUpdate: NoAction, map: "fk_employees_department")
+  test_attempts                                    test_attempts[]
+
+  @@unique([company_id, email])
+  @@index([company_id], map: "idx_employees_company")
+  @@index([department_id], map: "idx_employees_department")
+}
+
+model lesson_materials {
+  id           Int       @id @default(autoincrement())
+  lesson_id    Int
+  title        String    @db.VarChar(255)
+  file_url     String    @db.VarChar(1000)
+  file_type    String?   @db.VarChar(50)
+  file_size_kb Int?
+  uploaded_at  DateTime? @default(now()) @db.Timestamp(6)
+  lessons      lessons   @relation(fields: [lesson_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model lesson_progress {
+  id                 Int                @id @default(autoincrement())
+  enrollment_id      Int
+  lesson_id          Int
+  status             String?            @default("not_started") @db.VarChar(50)
+  time_spent_minutes Int?               @default(0)
+  started_at         DateTime?          @db.Timestamp(6)
+  completed_at       DateTime?          @db.Timestamp(6)
+  course_enrollments course_enrollments @relation(fields: [enrollment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  lessons            lessons            @relation(fields: [lesson_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([enrollment_id, lesson_id])
+  @@index([enrollment_id], map: "idx_lesson_progress_enrollment")
+}
+
+model lessons {
+  id               Int                @id @default(autoincrement())
+  module_id        Int
+  title            String             @db.VarChar(500)
+  content_type     String             @db.VarChar(50)
+  content_url      String?            @db.VarChar(1000)
+  content_text     String?
+  duration_minutes Int?
+  order_index      Int
+  is_published     Boolean?           @default(false)
+  created_at       DateTime?          @default(now()) @db.Timestamp(6)
+  lesson_materials lesson_materials[]
+  lesson_progress  lesson_progress[]
+  course_modules   course_modules     @relation(fields: [module_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([module_id], map: "idx_lessons_module")
+}
+
+model notifications {
+  id                Int       @id @default(autoincrement())
+  company_id        Int
+  recipient_type    String    @db.VarChar(50)
+  recipient_id      Int
+  notification_type String    @db.VarChar(100)
+  title             String    @db.VarChar(500)
+  message           String?
+  is_read           Boolean?  @default(false)
+  created_at        DateTime? @default(now()) @db.Timestamp(6)
+  companies         companies @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([company_id], map: "idx_notifications_company")
+  @@index([recipient_type, recipient_id], map: "idx_notifications_recipient")
+}
+
+model question_options {
+  id             Int            @id @default(autoincrement())
+  question_id    Int
+  option_text    String
+  is_correct     Boolean?       @default(false)
+  order_index    Int
+  test_questions test_questions @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([question_id], map: "idx_question_options_question")
+}
+
+model root_admins {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique @db.VarChar(255)
+  password_hash String    @db.VarChar(255)
+  full_name     String    @db.VarChar(255)
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+  last_login    DateTime? @db.Timestamp(6)
+}
+
+model subscription_plans {
+  id              Int         @id @default(autoincrement())
+  name            String      @db.VarChar(100)
+  max_employees   Int?
+  max_courses     Int?
+  max_storage_gb  Int?
+  price_per_month Decimal?    @db.Decimal(10, 2)
+  features        Json?
+  is_active       Boolean?    @default(true)
+  created_at      DateTime?   @default(now()) @db.Timestamp(6)
+  companies       companies[]
+}
+
+model test_answers {
+  id                  Int            @id @default(autoincrement())
+  attempt_id          Int
+  question_id         Int
+  selected_option_ids Int[]
+  text_answer         String?
+  is_correct          Boolean?
+  points_earned       Decimal?       @db.Decimal(5, 2)
+  answered_at         DateTime?      @default(now()) @db.Timestamp(6)
+  test_attempts       test_attempts  @relation(fields: [attempt_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  test_questions      test_questions @relation(fields: [question_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([attempt_id], map: "idx_test_answers_attempt")
+}
+
+model test_attempts {
+  id                 Int            @id @default(autoincrement())
+  test_id            Int
+  employee_id        Int
+  attempt_number     Int
+  started_at         DateTime?      @default(now()) @db.Timestamp(6)
+  submitted_at       DateTime?      @db.Timestamp(6)
+  score_percent      Decimal?       @db.Decimal(5, 2)
+  total_points       Decimal?       @db.Decimal(8, 2)
+  earned_points      Decimal?       @db.Decimal(8, 2)
+  is_passed          Boolean?
+  time_spent_minutes Int?
+  test_answers       test_answers[]
+  employees          employees      @relation(fields: [employee_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tests              tests          @relation(fields: [test_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([test_id, employee_id, attempt_number])
+  @@index([employee_id], map: "idx_test_attempts_employee")
+  @@index([test_id], map: "idx_test_attempts_test")
+}
+
+model test_questions {
+  id               Int                @id @default(autoincrement())
+  test_id          Int
+  question_type    String             @db.VarChar(50)
+  question_text    String
+  points           Decimal?           @default(1.0) @db.Decimal(5, 2)
+  order_index      Int
+  explanation      String?
+  created_at       DateTime?          @default(now()) @db.Timestamp(6)
+  question_options question_options[]
+  test_answers     test_answers[]
+  tests            tests              @relation(fields: [test_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([test_id], map: "idx_test_questions_test")
+}
+
+model tests {
+  id                    Int              @id @default(autoincrement())
+  company_id            Int
+  course_id             Int?
+  module_id             Int?
+  title                 String           @db.VarChar(500)
+  description           String?
+  time_limit_minutes    Int?
+  passing_score_percent Int?             @default(70)
+  max_attempts          Int?
+  shuffle_questions     Boolean?         @default(false)
+  show_correct_answers  Boolean?         @default(true)
+  is_published          Boolean?         @default(false)
+  created_by            Int?
+  created_at            DateTime?        @default(now()) @db.Timestamp(6)
+  test_attempts         test_attempts[]
+  test_questions        test_questions[]
+  companies             companies        @relation(fields: [company_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  courses               courses?         @relation(fields: [course_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  company_admins        company_admins?  @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  course_modules        course_modules?  @relation(fields: [module_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([company_id], map: "idx_tests_company")
+  @@index([course_id], map: "idx_tests_course")
+}

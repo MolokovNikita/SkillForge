@@ -1,35 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { Sidebar } from './components/Sidebar.tsx';
+import { Header } from './components/Header.tsx';
+import { Dashboard } from './components/Dashboard.tsx';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [activeItem, setActiveItem] = useState('dashboard');
+
+  const handleSidebarToggle = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
+  };
+
+  const handleNavigation = (item: string) => {
+    setActiveItem(item);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="h-screen bg-gray-50 flex">
+      {/* Sidebar */}
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        onToggle={handleSidebarToggle}
+        activeItem={activeItem}
+        onItemClick={handleNavigation}
+      />
 
-export default App
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <Header />
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto p-6">
+          {activeItem === 'dashboard' && <Dashboard />}
+          {activeItem === 'courses' && (
+            <div className="text-center py-12">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Courses Management</h2>
+              <p className="text-gray-600">Course management interface coming soon...</p>
+            </div>
+          )}
+          {activeItem === 'tests' && (
+            <div className="text-center py-12">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Tests & Assessments</h2>
+              <p className="text-gray-600">Test management interface coming soon...</p>
+            </div>
+          )}
+          {activeItem === 'employees' && (
+            <div className="text-center py-12">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Employee Management</h2>
+              <p className="text-gray-600">Employee management interface coming soon...</p>
+            </div>
+          )}
+          {activeItem === 'analytics' && (
+            <div className="text-center py-12">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Analytics & Reports</h2>
+              <p className="text-gray-600">Advanced analytics interface coming soon...</p>
+            </div>
+          )}
+          {activeItem === 'settings' && (
+            <div className="text-center py-12">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-4">Settings</h2>
+              <p className="text-gray-600">System settings interface coming soon...</p>
+            </div>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+} 

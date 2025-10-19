@@ -5,6 +5,7 @@ import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
 
 import { cn } from "./utils.ts";
+import styles from './context-menu.module.css';
 
 function ContextMenu({
     ...props
@@ -150,7 +151,7 @@ function ContextMenuCheckboxItem({
             checked={checked}
             {...props}
         >
-            <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+            <span className={styles.contextMenuItemIndicator}>
                 <ContextMenuPrimitive.ItemIndicator>
                     <CheckIcon className="size-4" />
                 </ContextMenuPrimitive.ItemIndicator>
@@ -174,7 +175,7 @@ function ContextMenuRadioItem({
             )}
             {...props}
         >
-            <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+            <span className={styles.contextMenuItemIndicator}>
                 <ContextMenuPrimitive.ItemIndicator>
                     <CircleIcon className="size-2 fill-current" />
                 </ContextMenuPrimitive.ItemIndicator>

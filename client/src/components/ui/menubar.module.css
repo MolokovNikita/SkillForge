@@ -1,0 +1,16 @@
+.menubarItemIndicator {
+    pointer-events: none;
+    position: absolute;
+    left: 0.5rem;
+    display: flex;
+    width: 0.875rem;
+    height: 0.875rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.menubarSubTriggerIcon {
+    margin-left: auto;
+    height: 1rem;
+    width: 1rem;
+}

@@ -1,0 +1,476 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 15rem;
+    /* Width of expanded sidebar */
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    color: var(--header-foreground);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+/* Collapsed sidebar state */
+.headerCollapsed {
+    left: 4rem;
+    /* Width of collapsed sidebar */
+}
+
+/* Dark theme glassmorphism */
+[data-theme="dark"] .header {
+    background: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+.searchContainer {
+    flex: 1;
+    max-width: 28rem;
+}
+
+.searchWrapper {
+    position: relative;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    color: var(--muted-foreground);
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.searchInput:focus+.searchIcon {
+    color: rgba(59, 130, 246, 0.8);
+    filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.3));
+}
+
+.searchInput {
+    padding-left: 2.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+    height: 2.25rem;
+    padding: 0.5rem 0.75rem 0.5rem 2.5rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    color: var(--foreground);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.searchInput:focus {
+    background: rgba(255, 255, 255, 0.15);
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.2),
+        0 8px 24px rgba(59, 130, 246, 0.15),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    transform: translateY(-1px);
+}
+
+/* Dark theme search input */
+[data-theme="dark"] .searchInput {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+[data-theme="dark"] .searchInput:focus {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(59, 130, 246, 0.6);
+    box-shadow:
+        0 0 0 3px rgba(59, 130, 246, 0.3),
+        0 8px 24px rgba(59, 130, 246, 0.2),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.notificationButton {
+    position: relative;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.notificationButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    transform: translateY(-2px);
+}
+
+/* Dark theme notification button */
+[data-theme="dark"] .notificationButton {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+[data-theme="dark"] .notificationButton:hover {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.notificationIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--muted-foreground);
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.notificationButton:hover .notificationIcon {
+    color: rgba(59, 130, 246, 0.8);
+    filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.3));
+    transform: scale(1.1);
+}
+
+.notificationBadge {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    height: 1.25rem;
+    width: 1.25rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: white;
+    font-weight: 600;
+    box-shadow:
+        0 4px 12px rgba(239, 68, 68, 0.4),
+        0 0 0 2px rgba(255, 255, 255, 0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow:
+            0 4px 12px rgba(239, 68, 68, 0.4),
+            0 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+
+    50% {
+        box-shadow:
+            0 4px 20px rgba(239, 68, 68, 0.6),
+            0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+}
+
+.companySelector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.companySelector:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    transform: translateY(-1px);
+}
+
+/* Dark theme company selector */
+[data-theme="dark"] .companySelector {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+[data-theme="dark"] .companySelector:hover {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.companyIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.2),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    transition: all 0.3s ease;
+}
+
+.companyIcon:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 6px 12px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.3) inset;
+}
+
+.companyIconText {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: white;
+}
+
+.companyText {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+}
+
+.companyChevron {
+    width: 1rem;
+    height: 1rem;
+    color: var(--muted-foreground);
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.companySelector:hover .companyChevron {
+    color: rgba(59, 130, 246, 0.8);
+    filter: drop-shadow(0 0 4px rgba(59, 130, 246, 0.3));
+    transform: translateY(-1px);
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.userProfile:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    transform: translateY(-1px);
+}
+
+/* Dark theme user profile */
+[data-theme="dark"] .userProfile {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+[data-theme="dark"] .userProfile:hover {
+    background: rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.userInfo {
+    text-align: right;
+    color: var(--header-foreground);
+}
+
+.userName {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--header-foreground);
+    margin: 0;
+}
+
+.userRole {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin: 0;
+}
+
+.userAvatar {
+    width: 2rem;
+    height: 2rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.8), rgba(147, 51, 234, 0.8));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 4px 12px rgba(59, 130, 246, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.userAvatar:hover {
+    transform: scale(1.1);
+    box-shadow:
+        0 6px 16px rgba(59, 130, 246, 0.4),
+        0 1px 0 rgba(255, 255, 255, 0.3) inset;
+}
+
+.userAvatarIcon {
+    width: 1rem;
+    height: 1rem;
+    color: white;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.logoutButton {
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+    color: var(--muted-foreground);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.1),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.logoutButton:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    box-shadow:
+        0 8px 20px rgba(239, 68, 68, 0.2),
+        0 0 0 1px rgba(239, 68, 68, 0.2),
+        0 1px 0 rgba(255, 255, 255, 0.2) inset;
+    transform: translateY(-1px);
+}
+
+/* Dark theme logout button */
+[data-theme="dark"] .logoutButton {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+
+[data-theme="dark"] .logoutButton:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.4);
+    box-shadow:
+        0 8px 20px rgba(239, 68, 68, 0.3),
+        0 0 0 1px rgba(239, 68, 68, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+.logoutIcon {
+    width: 1rem;
+    height: 1rem;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+.logoutButton:hover .logoutIcon {
+    color: #ef4444;
+    filter: drop-shadow(0 0 4px rgba(239, 68, 68, 0.4));
+    transform: scale(1.1);
+}
+
+/* Role colors with glow effects */
+.roleRootAdmin {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow:
+        0 4px 12px rgba(239, 68, 68, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.roleCompanyAdmin {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow:
+        0 4px 12px rgba(245, 158, 11, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.roleEmployee {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow:
+        0 4px 12px rgba(16, 185, 129, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.roleDefault {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    box-shadow:
+        0 4px 12px rgba(107, 114, 128, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.2);
+}

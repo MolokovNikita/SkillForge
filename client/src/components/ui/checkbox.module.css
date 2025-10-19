@@ -1,0 +1,175 @@
+.checkbox {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    outline: none;
+}
+
+.checkbox:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+.checkbox:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.checkbox:checked:hover {
+    background-color: #2563eb;
+    border-color: #2563eb;
+}
+
+.checkbox:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.checkbox:disabled:checked {
+    background-color: #9ca3af;
+    border-color: #9ca3af;
+}
+
+.checkboxIcon {
+    width: 0.75rem;
+    height: 0.75rem;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.checkbox:checked .checkboxIcon {
+    opacity: 1;
+}
+
+.checkboxLabel {
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+    color: #374151;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkboxLabelDisabled {
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.checkboxGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.checkboxGroupHorizontal {
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+}
+
+.checkboxItem {
+    display: flex;
+    align-items: center;
+}
+
+.checkboxItemDisabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.checkboxItemDisabled .checkboxLabel {
+    cursor: not-allowed;
+}
+
+.checkboxItemDisabled .checkbox {
+    cursor: not-allowed;
+}
+
+/* Sizes */
+.checkboxSm {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+.checkboxSm .checkboxIcon {
+    width: 0.625rem;
+    height: 0.625rem;
+}
+
+.checkboxLg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.checkboxLg .checkboxIcon {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Variants */
+.checkboxPrimary {
+    border-color: #3b82f6;
+}
+
+.checkboxPrimary:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.checkboxSecondary {
+    border-color: #6b7280;
+}
+
+.checkboxSecondary:checked {
+    background-color: #6b7280;
+    border-color: #6b7280;
+}
+
+.checkboxSuccess {
+    border-color: #10b981;
+}
+
+.checkboxSuccess:checked {
+    background-color: #10b981;
+    border-color: #10b981;
+}
+
+.checkboxWarning {
+    border-color: #f59e0b;
+}
+
+.checkboxWarning:checked {
+    background-color: #f59e0b;
+    border-color: #f59e0b;
+}
+
+.checkboxError {
+    border-color: #ef4444;
+}
+
+.checkboxError:checked {
+    background-color: #ef4444;
+    border-color: #ef4444;
+}
+
+/* Indeterminate state */
+.checkboxIndeterminate {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.checkboxIndeterminate .checkboxIcon {
+    opacity: 1;
+}
+
+.checkboxIndeterminate .checkboxIcon svg {
+    transform: rotate(90deg);
+}

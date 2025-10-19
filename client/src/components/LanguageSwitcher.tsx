@@ -1,31 +1,77 @@
-import React from 'react';
-import { Globe } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import styles from './LanguageSwitcher.module.css';
 
 const LanguageSwitcher: React.FC = () => {
     const { language, setLanguage } = useLanguage();
+    const [isOpen, setIsOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
 
     const languages = [
-        { code: 'en', name: 'English', flag: '🇺🇸' },
-        { code: 'ru', name: 'Русский', flag: '🇷🇺' }
+        { code: 'en', name: 'ENG', countryCode: 'US' },
+        { code: 'ru', name: 'RUS', countryCode: 'RU' }
     ] as const;
 
+    const currentLanguage = languages.find(lang => lang.code === language) || languages[0];
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    const handleLanguageSelect = (langCode: 'en' | 'ru') => {
+        setLanguage(langCode);
+        setIsOpen(false);
+    };
+
     return (
-        <div className="relative">
-            <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value as 'en' | 'ru')}
-                className="appearance-none bg-transparent border border-gray-300 rounded-md px-3 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        <div className={styles.container} ref={dropdownRef}>
+            <div
+                className={styles.selectTrigger}
+                onClick={() => setIsOpen(!isOpen)}
             >
-                {languages.map((lang) => (
-                    <option key={lang.code} value={lang.code}>
-                        {lang.flag} {lang.name}
-                    </option>
-                ))}
-            </select>
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <Globe className="w-4 h-4 text-gray-400" />
+                <div className={styles.selectedLanguage}>
+                    <div className={styles.flagContainer}>
+                        <img
+                            src={`https://flagcdn.com/w20/${currentLanguage.countryCode.toLowerCase()}.png`}
+                            alt={currentLanguage.name}
+                            className={styles.flag}
+                        />
+                    </div>
+                    <span className={styles.languageName}>{currentLanguage.name}</span>
+                </div>
+                <ChevronDown className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ''}`} />
             </div>
+
+            {isOpen && (
+                <div className={styles.dropdown}>
+                    {languages.map((lang) => (
+                        <div
+                            key={lang.code}
+                            onClick={() => handleLanguageSelect(lang.code as 'en' | 'ru')}
+                            className={`${styles.option} ${language === lang.code ? styles.optionSelected : ''}`}
+                        >
+                            <div className={styles.flagContainer}>
+                                <img
+                                    src={`https://flagcdn.com/w20/${lang.countryCode.toLowerCase()}.png`}
+                                    alt={lang.name}
+                                    className={styles.flag}
+                                />
+                            </div>
+                            <span className={styles.languageName}>{lang.name}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

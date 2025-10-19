@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import ToastComponent, { type Toast, type ToastType } from '../components/Toast';
+import React, { createContext, useContext, useState } from 'react';
+import type { ReactNode } from 'react';
+import ToastComponent, { type Toast } from '../components/Toast';
+import styles from './ToastContext.module.css';
 
 interface ToastContextType {
     showToast: (toast: Omit<Toast, 'id'>) => void;
@@ -58,9 +60,11 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
     return (
         <ToastContext.Provider value={{ showToast, showSuccess, showError, showWarning, showInfo }}>
             {children}
-            {toasts.map(toast => (
-                <ToastComponent key={toast.id} toast={toast} onRemove={removeToast} />
-            ))}
+            <div className={styles.toastContainer}>
+                {toasts.map(toast => (
+                    <ToastComponent key={toast.id} toast={toast} onRemove={removeToast} />
+                ))}
+            </div>
         </ToastContext.Provider>
     );
 };

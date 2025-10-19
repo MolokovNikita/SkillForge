@@ -3,9 +3,10 @@ import { Plus, Search, Edit, Trash2, Building2 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Badge } from '../components/ui/badge';
-import { companiesService, type Company, type CreateCompanyData } from '../services/companies';
+import { companiesService, type Company } from '../services/companies';
 import { useToast } from '../contexts/ToastContext';
 import { useLanguage } from '../contexts/LanguageContext';
+import styles from './CompaniesPage.module.css';
 
 interface CompanyFormData {
     name: string;
@@ -206,7 +207,7 @@ const CompaniesPage: React.FC = () => {
                 subdomain: formData.subdomain,
                 contact_email: formData.contact_email,
                 contact_phone: formData.contact_phone || null,
-                subscription_plan_id: formData.subscription_plan_id || null,
+                subscription_plan_id: formData.subscription_plan_id || 1,
                 subscription_status: formData.subscription_status,
                 subscription_start_date: formData.subscription_start_date ?
                     new Date(formData.subscription_start_date).toISOString() :
@@ -260,8 +261,8 @@ const CompaniesPage: React.FC = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+            <div className={styles.loading}>
+                <div className={styles.spinner}></div>
             </div>
         );
     }
@@ -269,113 +270,113 @@ const CompaniesPage: React.FC = () => {
     return (
         <div>
             {/* Header */}
-            <div className="flex justify-between items-center">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">{t('companies.title')}</h1>
-                    <p className="text-gray-600">{t('companies.subtitle')}</p>
+            <div className={styles.header}>
+                <div className={styles.headerContent}>
+                    <h1>{t('companies.title')}</h1>
+                    <p>{t('companies.subtitle')}</p>
                 </div>
-                <Button onClick={handleCreateCompany} className="flex items-center gap-2">
-                    <Plus className="w-4 h-4" />
+                <Button onClick={handleCreateCompany} className={styles.addButton}>
+                    <Plus className={styles.addButtonIcon} />
                     {t('companies.addCompany')}
                 </Button>
             </div>
 
             {/* Search and Filters */}
-            <div className="flex gap-4 mt-6">
-                <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className={styles.searchContainer}>
+                <div className={styles.searchWrapper}>
+                    <Search className={styles.searchIcon} />
                     <Input
                         placeholder={t('companies.searchPlaceholder')}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-10"
+                        className={styles.searchInput}
                     />
                 </div>
             </div>
 
             {/* Companies Table */}
-            <div className="bg-white rounded-lg shadow overflow-hidden mt-6">
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+            <div className={styles.tableContainer}>
+                <div className={styles.tableWrapper}>
+                    <table className={styles.table}>
+                        <thead className={styles.tableHead}>
                             <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th>
                                     {t('companies.companyName')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th>
                                     {t('companies.subdomain')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th>
                                     {t('companies.contactEmail')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th>
                                     {t('companies.subscriptionStatus')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th>
                                     {t('companies.maxEmployees')}
                                 </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th>
                                     {t('companies.created')}
                                 </th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th className={styles.tableCellRight}>
                                     {t('companies.actions')}
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className={styles.tableBody}>
                             {filteredCompanies.map((company) => (
-                                <tr key={company.id} className="hover:bg-gray-50">
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <div className="flex items-center">
-                                            <div className="flex-shrink-0 h-10 w-10">
-                                                <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                                                    <Building2 className="h-5 w-5 text-blue-600" />
+                                <tr key={company.id} className={styles.tableRow}>
+                                    <td className={styles.tableCell}>
+                                        <div className={styles.companyCell}>
+                                            <div className={styles.companyIcon}>
+                                                <div className={styles.companyIconWrapper}>
+                                                    <Building2 className={styles.companyIconSvg} />
                                                 </div>
                                             </div>
-                                            <div className="ml-4">
-                                                <div className="text-sm font-medium text-gray-900">
+                                            <div className={styles.companyInfo}>
+                                                <div className={styles.companyName}>
                                                     {company.name}
                                                 </div>
-                                                <div className="text-sm text-gray-500 truncate max-w-xs">
+                                                <div className={styles.companyId}>
                                                     ID: {company.id}
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className="text-sm text-gray-900">{company.subdomain}</span>
+                                    <td className={styles.tableCell}>
+                                        <span className={styles.companyText}>{company.subdomain}</span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className="text-sm text-gray-900">{company.contact_email}</span>
+                                    <td className={styles.tableCell}>
+                                        <span className={styles.companyText}>{company.contact_email}</span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <Badge className={company.subscription_status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                                    <td className={styles.tableCell}>
+                                        <Badge className={company.subscription_status === 'active' ? styles.badgeActive : styles.badgeInactive}>
                                             {t(`subscription.${company.subscription_status}`)}
                                         </Badge>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap">
-                                        <span className="text-sm text-gray-900">{company.max_employees || t('companies.unlimited')}</span>
+                                    <td className={styles.tableCell}>
+                                        <span className={styles.companyText}>{company.max_employees || t('companies.unlimited')}</span>
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td className={styles.tableCell}>
                                         {new Date(company.created_at).toLocaleDateString()}
                                     </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <div className="flex justify-end gap-2">
+                                    <td className={`${styles.tableCell} ${styles.tableCellRight}`}>
+                                        <div className={styles.actions}>
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => handleEditCompany(company)}
-                                                className="text-blue-600 hover:text-blue-800"
+                                                className={`${styles.actionButton} ${styles.actionButtonEdit}`}
                                             >
-                                                <Edit className="w-4 h-4" />
+                                                <Edit className={styles.actionIcon} />
                                             </Button>
                                             <Button
                                                 variant="ghost"
                                                 size="sm"
                                                 onClick={() => handleDeleteCompany(company.id)}
-                                                className="text-red-600 hover:text-red-800"
+                                                className={`${styles.actionButton} ${styles.actionButtonDelete}`}
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                <Trash2 className={styles.actionIcon} />
                                             </Button>
                                         </div>
                                     </td>
@@ -388,16 +389,16 @@ const CompaniesPage: React.FC = () => {
 
             {/* Empty State */}
             {filteredCompanies.length === 0 && (
-                <div className="text-center py-12 mt-6">
-                    <Building2 className="mx-auto h-12 w-12 text-gray-400" />
-                    <h3 className="mt-2 text-sm font-medium text-gray-900">{t('companies.noCompanies')}</h3>
-                    <p className="mt-1 text-sm text-gray-500">
+                <div className={styles.emptyState}>
+                    <Building2 className={styles.emptyIcon} />
+                    <h3 className={styles.emptyTitle}>{t('companies.noCompanies')}</h3>
+                    <p className={styles.emptyDescription}>
                         {searchTerm ? 'Try adjusting your search terms.' : t('companies.noCompaniesDesc')}
                     </p>
                     {!searchTerm && (
-                        <div className="mt-6">
+                        <div className={styles.emptyButton}>
                             <Button onClick={handleCreateCompany}>
-                                <Plus className="w-4 h-4 mr-2" />
+                                <Plus className={styles.addButtonIcon} />
                                 {t('companies.addCompany')}
                             </Button>
                         </div>
@@ -408,42 +409,32 @@ const CompaniesPage: React.FC = () => {
             {/* Modal */}
             {showModal && (
                 <div
-                    className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-200"
+                    className={styles.modal}
                     onClick={(e) => {
                         if (e.target === e.currentTarget) {
                             setShowModal(false);
                         }
                     }}
-                    style={{
-                        position: 'fixed',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        overflow: 'hidden',
-                        backdropFilter: 'blur(8px)',
-                        WebkitBackdropFilter: 'blur(8px)'
-                    }}
                 >
-                    <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
-                        <div className="p-6">
-                            <div className="flex items-center justify-between mb-6">
-                                <h3 className="text-xl font-semibold text-gray-900">
+                    <div className={styles.modalContent}>
+                        <div className={styles.modalHeader}>
+                            <div className={styles.modalTitle}>
+                                <h3>
                                     {editingCompany ? t('companies.editCompany') : t('companies.createCompany')}
                                 </h3>
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                                    className={styles.closeButton}
                                 >
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className={styles.closeIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                     </svg>
                                 </button>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                            <div className={styles.formGrid}>
+                                <div className={styles.formField}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.companyName')} *
                                     </label>
                                     <Input
@@ -455,15 +446,15 @@ const CompaniesPage: React.FC = () => {
                                             }
                                         }}
                                         placeholder={t('companies.placeholder.companyName')}
-                                        className={`w-full ${fieldErrors.name ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                        className={`${styles.formInput} ${fieldErrors.name ? styles.formInputError : ''}`}
                                     />
                                     {fieldErrors.name && (
-                                        <p className="mt-1 text-sm text-red-600">{fieldErrors.name}</p>
+                                        <p className={styles.formError}>{fieldErrors.name}</p>
                                     )}
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <div className={styles.formField}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.subdomain')} *
                                     </label>
                                     <Input
@@ -475,15 +466,15 @@ const CompaniesPage: React.FC = () => {
                                             }
                                         }}
                                         placeholder={t('companies.placeholder.subdomain')}
-                                        className={`w-full ${fieldErrors.subdomain ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                        className={`${styles.formInput} ${fieldErrors.subdomain ? styles.formInputError : ''}`}
                                     />
                                     {fieldErrors.subdomain && (
-                                        <p className="mt-1 text-sm text-red-600">{fieldErrors.subdomain}</p>
+                                        <p className={styles.formError}>{fieldErrors.subdomain}</p>
                                     )}
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <div className={styles.formField}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.contactEmail')} *
                                     </label>
                                     <Input
@@ -496,33 +487,33 @@ const CompaniesPage: React.FC = () => {
                                         }}
                                         placeholder={t('companies.placeholder.contactEmail')}
                                         type="email"
-                                        className={`w-full ${fieldErrors.contact_email ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}`}
+                                        className={`${styles.formInput} ${fieldErrors.contact_email ? styles.formInputError : ''}`}
                                     />
                                     {fieldErrors.contact_email && (
-                                        <p className="mt-1 text-sm text-red-600">{fieldErrors.contact_email}</p>
+                                        <p className={styles.formError}>{fieldErrors.contact_email}</p>
                                     )}
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <div className={styles.formField}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.contactPhone')}
                                     </label>
                                     <Input
                                         value={formData.contact_phone}
                                         onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
                                         placeholder={t('companies.placeholder.contactPhone')}
-                                        className="w-full"
+                                        className={styles.formInput}
                                     />
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <div className={styles.formField}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.subscriptionStatus')}
                                     </label>
                                     <select
                                         value={formData.subscription_status}
                                         onChange={(e) => setFormData({ ...formData, subscription_status: e.target.value })}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        className={styles.formSelect}
                                     >
                                         <option value="active">{t('subscription.active')}</option>
                                         <option value="inactive">{t('subscription.inactive')}</option>
@@ -530,8 +521,8 @@ const CompaniesPage: React.FC = () => {
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <div className={styles.formField}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.maxEmployees')}
                                     </label>
                                     <Input
@@ -539,52 +530,52 @@ const CompaniesPage: React.FC = () => {
                                         onChange={(e) => setFormData({ ...formData, max_employees: parseInt(e.target.value) || 0 })}
                                         placeholder={t('companies.placeholder.maxEmployees')}
                                         type="number"
-                                        className="w-full"
+                                        className={styles.formInput}
                                     />
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <div className={styles.formField}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.subscriptionStartDate')}
                                     </label>
                                     <Input
                                         value={formData.subscription_start_date}
                                         onChange={(e) => setFormData({ ...formData, subscription_start_date: e.target.value })}
                                         type="date"
-                                        className="w-full"
+                                        className={styles.formInput}
                                     />
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <div className={styles.formField}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.subscriptionEndDate')}
                                     </label>
                                     <Input
                                         value={formData.subscription_end_date}
                                         onChange={(e) => setFormData({ ...formData, subscription_end_date: e.target.value })}
                                         type="date"
-                                        className="w-full"
+                                        className={styles.formInput}
                                     />
                                 </div>
 
-                                <div className="md:col-span-2">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                <div className={`${styles.formField} ${styles.formFieldFull}`}>
+                                    <label className={styles.formLabel}>
                                         {t('companies.logoUrl')}
                                     </label>
                                     <Input
                                         value={formData.logo_url}
                                         onChange={(e) => setFormData({ ...formData, logo_url: e.target.value })}
                                         placeholder={t('companies.placeholder.logoUrl')}
-                                        className="w-full"
+                                        className={styles.formInput}
                                     />
                                 </div>
                             </div>
 
-                            <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
+                            <div className={styles.formActions}>
                                 <Button
                                     variant="outline"
                                     onClick={() => setShowModal(false)}
-                                    className="px-6"
+                                    className={styles.formButtonOutline}
                                     disabled={isSubmitting}
                                 >
                                     {t('common.cancel')}
@@ -592,11 +583,11 @@ const CompaniesPage: React.FC = () => {
                                 <Button
                                     onClick={handleSaveCompany}
                                     disabled={isSubmitting || !formData.name.trim() || !formData.subdomain.trim() || !formData.contact_email.trim()}
-                                    className="px-6"
+                                    className={styles.formButtonPrimary}
                                 >
                                     {isSubmitting ? (
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                        <div className={styles.loadingContainer}>
+                                            <div className={styles.loadingSpinner}></div>
                                             {editingCompany ? t('common.update') + '...' : t('common.create') + '...'}
                                         </div>
                                     ) : (

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { cn } from "./utils.ts";
+import styles from './select.module.css';
 
 function Select({
     ...props
@@ -116,7 +117,7 @@ function SelectItem({
             )}
             {...props}
         >
-            <span className="absolute right-2 flex size-3.5 items-center justify-center">
+            <span className={styles.selectItemIndicator}>
                 <SelectPrimitive.ItemIndicator>
                     <CheckIcon className="size-4" />
                 </SelectPrimitive.ItemIndicator>

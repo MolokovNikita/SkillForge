@@ -1,0 +1,122 @@
+.kpiCard {
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s;
+    color: var(--card-foreground);
+}
+
+.kpiCard:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.cardContent {
+    padding: 1.5rem;
+}
+
+.contentContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contentLeft {
+    flex: 1;
+}
+
+.title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    margin-bottom: 0.25rem;
+}
+
+.value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+}
+
+.change {
+    font-size: 0.875rem;
+}
+
+.changePositive {
+    color: var(--chart-4);
+}
+
+.changeNegative {
+    color: var(--destructive);
+}
+
+.changeNeutral {
+    color: var(--muted-foreground);
+}
+
+.iconContainer {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Color variants */
+.blue {
+    background-color: var(--accent);
+}
+
+.blueIcon {
+    background-color: var(--accent);
+    color: var(--chart-2);
+}
+
+.blueChange {
+    color: var(--chart-2);
+}
+
+.green {
+    background-color: var(--chart-4);
+}
+
+.greenIcon {
+    background-color: var(--chart-4);
+    color: var(--chart-4);
+}
+
+.greenChange {
+    color: var(--chart-4);
+}
+
+.orange {
+    background-color: var(--chart-1);
+}
+
+.orangeIcon {
+    background-color: var(--chart-1);
+    color: var(--chart-1);
+}
+
+.orangeChange {
+    color: var(--chart-1);
+}
+
+.purple {
+    background-color: var(--chart-3);
+}
+
+.purpleIcon {
+    background-color: var(--chart-3);
+    color: var(--chart-3);
+}
+
+.purpleChange {
+    color: var(--chart-3);
+}

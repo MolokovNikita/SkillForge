@@ -1,0 +1,107 @@
+.pagination {
+    margin-left: auto;
+    /* mx-auto */
+    margin-right: auto;
+    /* mx-auto */
+    display: flex;
+    width: 100%;
+    /* w-full */
+    justify-content: center;
+}
+
+.paginationContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+    /* gap-1 */
+}
+
+.paginationPrevious {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    /* gap-1 */
+    padding-left: 0.625rem;
+    /* px-2.5 */
+    padding-right: 0.625rem;
+    /* px-2.5 */
+}
+
+@media (min-width: 640px) {
+    .paginationPrevious {
+        padding-left: 0.625rem;
+        /* sm:pl-2.5 */
+    }
+}
+
+.paginationPreviousText {
+    display: none;
+    /* hidden */
+}
+
+@media (min-width: 640px) {
+    .paginationPreviousText {
+        display: block;
+        /* sm:block */
+    }
+}
+
+.paginationNext {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    /* gap-1 */
+    padding-left: 0.625rem;
+    /* px-2.5 */
+    padding-right: 0.625rem;
+    /* px-2.5 */
+}
+
+@media (min-width: 640px) {
+    .paginationNext {
+        padding-right: 0.625rem;
+        /* sm:pr-2.5 */
+    }
+}
+
+.paginationNextText {
+    display: none;
+    /* hidden */
+}
+
+@media (min-width: 640px) {
+    .paginationNextText {
+        display: block;
+        /* sm:block */
+    }
+}
+
+.paginationEllipsis {
+    display: flex;
+    width: 2.25rem;
+    /* size-9 */
+    height: 2.25rem;
+    /* size-9 */
+    align-items: center;
+    justify-content: center;
+}
+
+.paginationEllipsisIcon {
+    width: 1rem;
+    /* size-4 */
+    height: 1rem;
+    /* size-4 */
+}
+
+.paginationEllipsisText {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

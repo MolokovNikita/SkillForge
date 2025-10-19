@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
+import styles from './Toast.module.css';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -35,81 +36,57 @@ const ToastComponent: React.FC<ToastProps> = ({ toast, onRemove }) => {
     const getIcon = () => {
         switch (toast.type) {
             case 'success':
-                return <CheckCircle className="w-5 h-5 text-green-500" />;
+                return <CheckCircle className={styles.icon} />;
             case 'error':
-                return <XCircle className="w-5 h-5 text-red-500" />;
+                return <XCircle className={styles.icon} />;
             case 'warning':
-                return <AlertCircle className="w-5 h-5 text-yellow-500" />;
+                return <AlertCircle className={styles.icon} />;
             case 'info':
-                return <AlertCircle className="w-5 h-5 text-blue-500" />;
+                return <AlertCircle className={styles.icon} />;
             default:
-                return <AlertCircle className="w-5 h-5 text-gray-500" />;
+                return <AlertCircle className={styles.icon} />;
         }
     };
 
-    const getBackgroundColor = () => {
+    const getToastClass = () => {
         switch (toast.type) {
             case 'success':
-                return 'bg-green-50 border-green-200';
+                return styles.toastSuccess;
             case 'error':
-                return 'bg-red-50 border-red-200';
+                return styles.toastError;
             case 'warning':
-                return 'bg-yellow-50 border-yellow-200';
+                return styles.toastWarning;
             case 'info':
-                return 'bg-blue-50 border-blue-200';
+                return styles.toastInfo;
             default:
-                return 'bg-gray-50 border-gray-200';
-        }
-    };
-
-    const getTextColor = () => {
-        switch (toast.type) {
-            case 'success':
-                return 'text-green-800';
-            case 'error':
-                return 'text-red-800';
-            case 'warning':
-                return 'text-yellow-800';
-            case 'info':
-                return 'text-blue-800';
-            default:
-                return 'text-gray-800';
+                return styles.toastInfo;
         }
     };
 
     return (
         <div
-            className={`fixed top-4 right-4 z-50 max-w-sm w-full bg-white rounded-lg shadow-lg border-l-4 ${getBackgroundColor()} transform transition-all duration-300 ${isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-                }`}
+            className={`${styles.toast} ${getToastClass()} ${isVisible ? 'opacity-100' : 'opacity-0'}`}
         >
-            <div className="p-4">
-                <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                        {getIcon()}
-                    </div>
-                    <div className="ml-3 w-0 flex-1">
-                        <p className={`text-sm font-medium ${getTextColor()}`}>
-                            {toast.title}
-                        </p>
-                        {toast.message && (
-                            <p className={`mt-1 text-sm ${getTextColor()} opacity-75`}>
-                                {toast.message}
-                            </p>
-                        )}
-                    </div>
-                    <div className="ml-4 flex-shrink-0 flex">
-                        <button
-                            className="inline-flex text-gray-400 hover:text-gray-600 focus:outline-none focus:text-gray-600 transition ease-in-out duration-150"
-                            onClick={() => {
-                                setIsVisible(false);
-                                setTimeout(() => onRemove(toast.id), 300);
-                            }}
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
-                    </div>
-                </div>
+            {getIcon()}
+            <div className={styles.content}>
+                <p className={styles.title}>
+                    {toast.title}
+                </p>
+                {toast.message && (
+                    <p className={styles.message}>
+                        {toast.message}
+                    </p>
+                )}
             </div>
+            <button
+                className={styles.closeButton}
+                onClick={() => {
+                    setIsVisible(false);
+                    setTimeout(() => onRemove(toast.id), 300);
+                }}
+            >
+                <X className={styles.closeIcon} />
+            </button>
         </div>
     );
 };

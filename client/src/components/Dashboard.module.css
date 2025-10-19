@@ -1,0 +1,432 @@
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background-color: var(--background);
+    color: var(--foreground);
+}
+
+.welcomeCard {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.welcomeContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.welcomeText h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+}
+
+.welcomeText p {
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+}
+
+.welcomeActions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.welcomeButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+.welcomeButton:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.welcomeButtonIcon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.activityBold {
+    font-weight: 500;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.chartsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .chartsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1280px) {
+    .chartsGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .contentGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.statCard {
+    background-color: var(--card);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    color: var(--card-foreground);
+}
+
+.statHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.statTitle {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted-foreground);
+    margin: 0;
+}
+
+.statIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--muted-foreground);
+}
+
+.statValue {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin: 0 0 0.25rem 0;
+}
+
+.statChange {
+    font-size: 0.875rem;
+    color: var(--chart-4);
+    margin: 0;
+}
+
+.statChangeNegative {
+    color: var(--destructive);
+}
+
+.recentActivity {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.recentActivity h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0 0 1rem 0;
+}
+
+.activityList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.activityItem {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.activityItem:last-child {
+    border-bottom: none;
+}
+
+.activityIcon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.activityIcon svg {
+    width: 1rem;
+    height: 1rem;
+    color: var(--muted-foreground);
+}
+
+.activityContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.activityText {
+    font-size: 0.875rem;
+    color: var(--foreground);
+    margin: 0 0 0.25rem 0;
+}
+
+.activityTime {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin: 0;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted-foreground);
+}
+
+.emptyState h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0 0 0.5rem 0;
+}
+
+.emptyState p {
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* Activity styles */
+.activityList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.activityItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.activityIcon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.activityIconText {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--chart-2);
+}
+
+.activityContent {
+    flex: 1;
+    min-width: 0;
+}
+
+.activityText {
+    font-size: 0.875rem;
+    color: var(--foreground);
+    margin: 0 0 0.25rem 0;
+}
+
+.activityTime {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin: 0;
+}
+
+/* Deadline styles */
+.deadlineList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.deadlineItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background-color: var(--card);
+    border-radius: 0.5rem;
+}
+
+.deadlineContent {
+    flex: 1;
+}
+
+.deadlineCourse {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+    margin: 0 0 0.25rem 0;
+}
+
+.deadlineDate {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin: 0;
+}
+
+.deadlineActions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.deadlineBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.deadlineBadgeHigh {
+    background-color: var(--destructive);
+    color: var(--destructive-foreground);
+}
+
+.deadlineBadgeMedium {
+    background-color: var(--chart-1);
+    color: var(--foreground);
+}
+
+.deadlineBadgeLow {
+    background-color: var(--chart-4);
+    color: var(--foreground);
+}
+
+/* Quick actions */
+.quickActionsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+
+.quickActionButton {
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quickActionButton:hover {
+    background-color: var(--card);
+    border-color: var(--border);
+}
+
+.quickActionIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--muted-foreground);
+}
+
+.quickActionText {
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    margin: 0;
+}
+
+/* Section headers */
+.sectionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0;
+}
+
+.sectionButton {
+    color: var(--chart-2);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.sectionButton:hover {
+    color: var(--chart-2);
+}
+
+/* Popular courses */
+.coursesGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .coursesGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .coursesGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

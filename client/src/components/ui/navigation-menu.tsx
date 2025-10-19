@@ -4,6 +4,7 @@ import { cva } from "class-variance-authority";
 import { ChevronDownIcon } from "lucide-react";
 
 import { cn } from "./utils.ts";
+import styles from './navigation-menu.module.css';
 
 function NavigationMenu({
     className,
@@ -75,7 +76,7 @@ function NavigationMenuTrigger({
         >
             {children}{" "}
             <ChevronDownIcon
-                className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
+                className={styles.navigationMenuChevron}
                 aria-hidden="true"
             />
         </NavigationMenuPrimitive.Trigger>
@@ -150,7 +151,7 @@ function NavigationMenuIndicator({
             )}
             {...props}
         >
-            <div className="bg-border relative top-[60%] h-2 w-2 rotate-45 rounded-tl-sm shadow-md" />
+            <div className={styles.navigationMenuIndicator} />
         </NavigationMenuPrimitive.Indicator>
     );
 }

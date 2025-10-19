@@ -1,0 +1,107 @@
+.hoverCardContent {
+    background-color: hsl(var(--popover));
+    color: hsl(var(--popover-foreground));
+    z-index: 50;
+    width: 16rem;
+    /* w-64 */
+    border-radius: 0.375rem;
+    /* rounded-md */
+    border: 1px solid hsl(var(--border));
+    padding: 1rem;
+    /* p-4 */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    /* shadow-md */
+    outline: none;
+    transform-origin: var(--radix-hover-card-content-transform-origin);
+}
+
+/* Animation states */
+.hoverCardContent[data-state="open"] {
+    animation: hoverCardIn 0.15s ease-out;
+}
+
+.hoverCardContent[data-state="closed"] {
+    animation: hoverCardOut 0.15s ease-in;
+}
+
+/* Slide animations based on side */
+.hoverCardContent[data-side="bottom"] {
+    animation: hoverCardIn 0.15s ease-out, slideInFromTop 0.15s ease-out;
+}
+
+.hoverCardContent[data-side="left"] {
+    animation: hoverCardIn 0.15s ease-out, slideInFromRight 0.15s ease-out;
+}
+
+.hoverCardContent[data-side="right"] {
+    animation: hoverCardIn 0.15s ease-out, slideInFromLeft 0.15s ease-out;
+}
+
+.hoverCardContent[data-side="top"] {
+    animation: hoverCardIn 0.15s ease-out, slideInFromBottom 0.15s ease-out;
+}
+
+/* Keyframes */
+@keyframes hoverCardIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes hoverCardOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+@keyframes slideInFromTop {
+    from {
+        transform: translateY(-0.5rem);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(0.5rem);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-0.5rem);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        transform: translateY(0.5rem);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}

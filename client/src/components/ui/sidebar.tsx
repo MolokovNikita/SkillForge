@@ -7,6 +7,7 @@ import { PanelLeftIcon } from "lucide-react";
 
 import { useIsMobile } from "./use-mobile.ts";
 import { cn } from "./utils.ts";
+import styles from './sidebar.module.css';
 import { Button } from "./button.tsx";
 import { Input } from "./input.tsx";
 import { Separator } from "./separator.tsx";
@@ -187,7 +188,7 @@ function Sidebar({
                     data-sidebar="sidebar"
                     data-slot="sidebar"
                     data-mobile="true"
-                    className="bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden"
+                    className={styles.sidebarSheetContent}
                     style={
                         {
                             "--sidebar-width": SIDEBAR_WIDTH_MOBILE,
@@ -199,7 +200,7 @@ function Sidebar({
                         <SheetTitle>Sidebar</SheetTitle>
                         <SheetDescription>Displays the mobile sidebar.</SheetDescription>
                     </SheetHeader>
-                    <div className="flex h-full w-full flex-col">{children}</div>
+                    <div className={styles.sidebarSheetInner}>{children}</div>
                 </SheetContent>
             </Sheet>
         );
@@ -207,7 +208,7 @@ function Sidebar({
 
     return (
         <div
-            className="group peer text-sidebar-foreground hidden md:block"
+            className={styles.sidebarGroup}
             data-state={state}
             data-collapsible={state === "collapsed" ? collapsible : ""}
             data-variant={variant}
@@ -244,7 +245,7 @@ function Sidebar({
                 <div
                     data-sidebar="sidebar"
                     data-slot="sidebar-inner"
-                    className="bg-sidebar group-data-[variant=floating]:border-sidebar-border flex h-full w-full flex-col group-data-[variant=floating]:rounded-lg group-data-[variant=floating]:border group-data-[variant=floating]:shadow-sm"
+                    className={styles.sidebarInner}
                 >
                     {children}
                 </div>
@@ -620,12 +621,12 @@ function SidebarMenuSkeleton({
         >
             {showIcon && (
                 <Skeleton
-                    className="size-4 rounded-md"
+                    className={styles.sidebarSkeletonIcon}
                     data-sidebar="menu-skeleton-icon"
                 />
             )}
             <Skeleton
-                className="h-4 max-w-(--skeleton-width) flex-1"
+                className={styles.sidebarSkeletonText}
                 data-sidebar="menu-skeleton-text"
                 style={
                     {

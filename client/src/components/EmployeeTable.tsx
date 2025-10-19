@@ -19,6 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
+import styles from './EmployeeTable.module.css';
 
 interface Employee {
   id: string;
@@ -91,14 +92,14 @@ const employees: Employee[] = [
 ];
 
 const statusColors = {
-  Active: 'bg-green-100 text-green-800',
-  Inactive: 'bg-gray-100 text-gray-800',
-  'On Leave': 'bg-yellow-100 text-yellow-800'
+  Active: styles.statusActive,
+  Inactive: styles.statusInactive,
+  'On Leave': styles.statusOnLeave
 };
 
 export function EmployeeTable() {
   const [searchTerm, setSearchTerm] = useState('');
-  
+
   const filteredEmployees = employees.filter(employee =>
     employee.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     employee.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -106,36 +107,36 @@ export function EmployeeTable() {
   );
 
   return (
-    <Card className="border-gray-200 shadow-sm">
+    <Card className={styles.employeeTableCard}>
       <CardHeader>
-        <div className="flex items-center justify-between">
+        <div className={styles.headerContent}>
           <CardTitle>Employee Learning Progress</CardTitle>
-          <div className="flex items-center space-x-2">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <div className={styles.headerActions}>
+            <div className={styles.searchContainer}>
+              <Search className={styles.searchIcon} />
               <Input
                 placeholder="Search employees..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-64"
+                className={styles.searchInput}
               />
             </div>
-            <Button variant="outline" size="sm">
-              <Filter className="w-4 h-4 mr-2" />
+            <Button variant="outline" size="sm" className={styles.filterButton}>
+              <Filter className={styles.filterIcon} />
               Filter
             </Button>
-            <Button variant="outline" size="sm">
-              <Download className="w-4 h-4 mr-2" />
+            <Button variant="outline" size="sm" className={styles.exportButton}>
+              <Download className={styles.exportIcon} />
               Export
             </Button>
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="rounded-md border border-gray-200">
-          <Table>
-            <TableHeader>
-              <TableRow>
+      <CardContent className={styles.cardContent}>
+        <div className={styles.tableContainer}>
+          <Table className={styles.table}>
+            <TableHeader className={styles.tableHeader}>
+              <TableRow className={styles.tableRow}>
                 <TableHead>Employee</TableHead>
                 <TableHead>Department</TableHead>
                 <TableHead>Courses</TableHead>
@@ -143,55 +144,54 @@ export function EmployeeTable() {
                 <TableHead>Avg Score</TableHead>
                 <TableHead>Last Activity</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead className="w-[50px]"></TableHead>
+                <TableHead className={styles.actionsCell}></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filteredEmployees.map((employee) => {
                 const completionRate = Math.round((employee.coursesCompleted / employee.coursesEnrolled) * 100);
-                
+
                 return (
-                  <TableRow key={employee.id} className="hover:bg-gray-50">
-                    <TableCell>
-                      <div>
-                        <div className="font-medium text-gray-900">{employee.name}</div>
-                        <div className="text-sm text-gray-500">{employee.email}</div>
+                  <TableRow key={employee.id} className={styles.tableRow}>
+                    <TableCell className={styles.tableCell}>
+                      <div className={styles.employeeInfo}>
+                        <div className={styles.employeeName}>{employee.name}</div>
+                        <div className={styles.employeeEmail}>{employee.email}</div>
                       </div>
                     </TableCell>
-                    <TableCell>{employee.department}</TableCell>
-                    <TableCell>
-                      <span className="text-sm">
+                    <TableCell className={styles.tableCell}>{employee.department}</TableCell>
+                    <TableCell className={styles.tableCell}>
+                      <span className={styles.coursesInfo}>
                         {employee.coursesCompleted}/{employee.coursesEnrolled}
                       </span>
                     </TableCell>
-                    <TableCell>
-                      <div className="w-20">
-                        <Progress value={completionRate} className="h-2" />
-                        <span className="text-xs text-gray-500 mt-1">{completionRate}%</span>
+                    <TableCell className={styles.tableCell}>
+                      <div className={styles.progressContainer}>
+                        <Progress value={completionRate} className={styles.progressBar} />
+                        <span className={styles.progressText}>{completionRate}%</span>
                       </div>
                     </TableCell>
-                    <TableCell>
-                      <span className={`font-medium ${
-                        employee.avgScore >= 90 ? 'text-green-600' :
-                        employee.avgScore >= 80 ? 'text-blue-600' :
-                        'text-yellow-600'
-                      }`}>
+                    <TableCell className={styles.tableCell}>
+                      <span className={`${styles.scoreContainer} ${employee.avgScore >= 90 ? styles.scoreHigh :
+                        employee.avgScore >= 80 ? styles.scoreMedium :
+                          styles.scoreLow
+                        }`}>
                         {employee.avgScore}%
                       </span>
                     </TableCell>
-                    <TableCell className="text-sm text-gray-500">
+                    <TableCell className={`${styles.tableCell} ${styles.lastActivity}`}>
                       {employee.lastActivity}
                     </TableCell>
-                    <TableCell>
-                      <Badge className={statusColors[employee.status]}>
+                    <TableCell className={styles.tableCell}>
+                      <Badge className={`${styles.statusBadge} ${statusColors[employee.status]}`}>
                         {employee.status}
                       </Badge>
                     </TableCell>
-                    <TableCell>
+                    <TableCell className={styles.actionsCell}>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <MoreHorizontal className="h-4 w-4" />
+                          <Button variant="ghost" size="sm" className={styles.actionsButton}>
+                            <MoreHorizontal className={styles.actionsIcon} />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">

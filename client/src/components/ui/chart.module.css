@@ -1,0 +1,74 @@
+.chartContainer {
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+}
+
+.chartTooltip {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 0.75rem;
+}
+
+.chartTooltipContent {
+    display: grid;
+    gap: 0.375rem;
+}
+
+.chartTooltipItem {
+    display: grid;
+    gap: 0.375rem;
+}
+
+.chartTooltipLabel {
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.chartTooltipValue {
+    color: #111827;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.chartLegend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.chartLegendItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #374151;
+}
+
+.chartLegendDot {
+    height: 0.5rem;
+    width: 0.5rem;
+    flex-shrink: 0;
+    border-radius: 2px;
+}
+
+.chartLegendLabel {
+    color: #6b7280;
+}
+
+.chartLegendValue {
+    color: #111827;
+    font-weight: 500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+    .chartLegend {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

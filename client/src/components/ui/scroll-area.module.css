@@ -1,0 +1,19 @@
+.scrollAreaViewport {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    transition: color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    outline: none;
+}
+
+.scrollAreaViewport:focus-visible {
+    box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.1);
+    outline: 1px solid #0f172a;
+}
+
+.scrollAreaThumb {
+    background-color: #e5e7eb;
+    position: relative;
+    flex: 1;
+    border-radius: 9999px;
+}

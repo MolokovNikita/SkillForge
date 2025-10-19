@@ -1,0 +1,28 @@
+.formItem {
+    display: grid;
+    gap: 0.5rem;
+    /* gap-2 */
+}
+
+.formLabel {
+    /* Base styles for form label */
+}
+
+.formLabel[data-error="true"] {
+    color: #dc2626;
+    /* text-destructive */
+}
+
+.formDescription {
+    color: #6b7280;
+    /* text-muted-foreground */
+    font-size: 0.875rem;
+    /* text-sm */
+}
+
+.formMessage {
+    color: #dc2626;
+    /* text-destructive */
+    font-size: 0.875rem;
+    /* text-sm */
+}

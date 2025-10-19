@@ -7,6 +7,7 @@ import useEmblaCarousel, {
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 import { cn } from "./utils.ts";
+import styles from './carousel.module.css';
 import { Button } from "./button.tsx";
 
 type CarouselApi = UseEmblaCarouselType[1];
@@ -138,7 +139,7 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
     return (
         <div
             ref={carouselRef}
-            className="overflow-hidden"
+            className={styles.carouselContent}
             data-slot="carousel-content"
         >
             <div

@@ -5,6 +5,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { SearchIcon } from "lucide-react";
 
 import { cn } from "./utils.ts";
+import styles from './command.module.css';
 import {
     Dialog,
     DialogContent,
@@ -44,8 +45,8 @@ function CommandDialog({
                 <DialogTitle>{title}</DialogTitle>
                 <DialogDescription>{description}</DialogDescription>
             </DialogHeader>
-            <DialogContent className="overflow-hidden p-0">
-                <Command className="[&_[cmdk-group-heading]]:text-muted-foreground **:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+            <DialogContent className={styles.commandDialogContent}>
+                <Command className={styles.command}>
                     {children}
                 </Command>
             </DialogContent>
@@ -60,7 +61,7 @@ function CommandInput({
     return (
         <div
             data-slot="command-input-wrapper"
-            className="flex h-9 items-center gap-2 border-b px-3"
+            className={styles.commandInputWrapper}
         >
             <SearchIcon className="size-4 shrink-0 opacity-50" />
             <CommandPrimitive.Input
@@ -97,7 +98,7 @@ function CommandEmpty({
     return (
         <CommandPrimitive.Empty
             data-slot="command-empty"
-            className="py-6 text-center text-sm"
+            className={styles.commandEmpty}
             {...props}
         />
     );

@@ -5,6 +5,7 @@ import { Header } from './components/Header.tsx';
 import { Dashboard } from './components/Dashboard.tsx';
 import LoginPage from './pages/LoginPage';
 import CompaniesPage from './pages/CompaniesPage';
+import styles from './App.module.css';
 
 export default function App() {
   const { isAuthenticated, loading, role } = useAuth();
@@ -21,10 +22,10 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+      <div className={styles.loadingScreen}>
+        <div className={styles.loadingContent}>
+          <div className={styles.loadingSpinner}></div>
+          <p className={styles.loadingText}>Loading...</p>
         </div>
       </div>
     );
@@ -37,7 +38,8 @@ export default function App() {
   // Show different UI based on role
   if (role === 'root_admin') {
     return (
-      <div className="h-screen bg-gray-50 flex">
+      <div className={styles.mainLayout}>
+
         {/* Sidebar */}
         <Sidebar
           collapsed={sidebarCollapsed}
@@ -47,48 +49,48 @@ export default function App() {
         />
 
         {/* Main Content */}
-        <div className="flex-1 flex flex-col overflow-hidden">
+        <div className={`${styles.mainContent} ${sidebarCollapsed ? styles.mainContentCollapsed : ''}`}>
           {/* Header */}
-          <Header />
+          <Header sidebarCollapsed={sidebarCollapsed} />
 
           {/* Page Content */}
-          <main className="flex-1 overflow-y-auto p-6">
+          <main className={styles.pageContent}>
             {activeItem === 'dashboard' && <Dashboard />}
             {activeItem === 'courses' && (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Courses Management</h2>
-                <p className="text-gray-600">Course management interface coming soon...</p>
+              <div className={styles.placeholderSection}>
+                <h2 className={styles.placeholderTitle}>Courses Management</h2>
+                <p className={styles.placeholderText}>Course management interface coming soon...</p>
               </div>
             )}
             {activeItem === 'tests' && (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Tests & Assessments</h2>
-                <p className="text-gray-600">Test management interface coming soon...</p>
+              <div className={styles.placeholderSection}>
+                <h2 className={styles.placeholderTitle}>Tests & Assessments</h2>
+                <p className={styles.placeholderText}>Test management interface coming soon...</p>
               </div>
             )}
             {activeItem === 'employees' && (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Employee Management</h2>
-                <p className="text-gray-600">Employee management interface coming soon...</p>
+              <div className={styles.placeholderSection}>
+                <h2 className={styles.placeholderTitle}>Employee Management</h2>
+                <p className={styles.placeholderText}>Employee management interface coming soon...</p>
               </div>
             )}
             {activeItem === 'analytics' && (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Analytics & Reports</h2>
-                <p className="text-gray-600">Advanced analytics interface coming soon...</p>
+              <div className={styles.placeholderSection}>
+                <h2 className={styles.placeholderTitle}>Analytics & Reports</h2>
+                <p className={styles.placeholderText}>Advanced analytics interface coming soon...</p>
               </div>
             )}
             {activeItem === 'companies' && <CompaniesPage />}
             {activeItem === 'system' && (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">System Administration</h2>
-                <p className="text-gray-600">System administration interface coming soon...</p>
+              <div className={styles.placeholderSection}>
+                <h2 className={styles.placeholderTitle}>System Administration</h2>
+                <p className={styles.placeholderText}>System administration interface coming soon...</p>
               </div>
             )}
             {activeItem === 'settings' && (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-4">Settings</h2>
-                <p className="text-gray-600">System settings interface coming soon...</p>
+              <div className={styles.placeholderSection}>
+                <h2 className={styles.placeholderTitle}>Settings</h2>
+                <p className={styles.placeholderText}>System settings interface coming soon...</p>
               </div>
             )}
           </main>
@@ -99,13 +101,13 @@ export default function App() {
 
   // For other roles, show simple dashboard
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <h1 className="text-2xl font-bold text-gray-900">
+    <div className={styles.simpleDashboard}>
+      <div className={styles.simpleDashboardContent}>
+        <div className={styles.simpleDashboardInner}>
+          <h1 className={styles.simpleDashboardTitle}>
             Welcome, {role === 'company_admin' ? 'Company Admin' : 'Employee'}!
           </h1>
-          <p className="text-gray-600 mt-2">Your dashboard is being prepared...</p>
+          <p className={styles.simpleDashboardSubtitle}>Your dashboard is being prepared...</p>
         </div>
       </div>
     </div>

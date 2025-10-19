@@ -1,0 +1,19 @@
+.separator {
+    background-color: hsl(var(--border));
+    flex-shrink: 0;
+    /* shrink-0 */
+}
+
+.separator[data-orientation="horizontal"] {
+    height: 1px;
+    /* h-px */
+    width: 100%;
+    /* w-full */
+}
+
+.separator[data-orientation="vertical"] {
+    height: 100%;
+    /* h-full */
+    width: 1px;
+    /* w-px */
+}

@@ -6,6 +6,7 @@ import { EmployeeTable } from './EmployeeTable.tsx';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
+import styles from './Dashboard.module.css';
 
 const recentCourses = [
     {
@@ -62,23 +63,23 @@ const upcomingDeadlines = [
 
 export function Dashboard() {
     return (
-        <div className="space-y-6">
+        <div className={styles.dashboard}>
             {/* Welcome Banner */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg p-6 text-white">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-2xl font-semibold mb-2">Welcome back, John! 👋</h1>
-                        <p className="text-blue-100">
+            <div className={styles.welcomeCard}>
+                <div className={styles.welcomeContent}>
+                    <div className={styles.welcomeText}>
+                        <h1>Welcome back, John! 👋</h1>
+                        <p>
                             You have 3 pending course approvals and 12 new employee enrollments to review.
                         </p>
                     </div>
-                    <div className="flex space-x-3">
-                        <Button variant="secondary" className="bg-white/20 text-white border-white/20 hover:bg-white/30">
-                            <Plus className="w-4 h-4 mr-2" />
+                    <div className={styles.welcomeActions}>
+                        <Button variant="secondary" className={styles.welcomeButton}>
+                            <Plus className={styles.welcomeButtonIcon} />
                             Create Course
                         </Button>
-                        <Button variant="secondary" className="bg-white/20 text-white border-white/20 hover:bg-white/30">
-                            <Eye className="w-4 h-4 mr-2" />
+                        <Button variant="secondary" className={styles.welcomeButton}>
+                            <Eye className={styles.welcomeButtonIcon} />
                             View Reports
                         </Button>
                     </div>
@@ -86,7 +87,7 @@ export function Dashboard() {
             </div>
 
             {/* KPI Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className={styles.statsGrid}>
                 <KPICard
                     title="Total Employees"
                     value="1,247"
@@ -122,34 +123,34 @@ export function Dashboard() {
             </div>
 
             {/* Charts Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className={styles.chartsGrid}>
                 <ProgressChart />
                 <TestScoreChart />
                 <CompletionChart />
             </div>
 
             {/* Content Row */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className={styles.contentGrid}>
                 {/* Recent Activity */}
-                <Card className="border-gray-200 shadow-sm">
+                <Card className={styles.statCard}>
                     <CardHeader>
                         <CardTitle>Recent Activity</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-4">
+                        <div className={styles.activityList}>
                             {recentActivity.map((activity) => (
-                                <div key={activity.id} className="flex items-start space-x-3">
-                                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <span className="text-xs font-medium text-blue-600">
+                                <div key={activity.id} className={styles.activityItem}>
+                                    <div className={styles.activityIcon}>
+                                        <span className={styles.activityIconText}>
                                             {activity.user.split(' ').map(n => n[0]).join('')}
                                         </span>
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm text-gray-900">
-                                            <span className="font-medium">{activity.user}</span> {activity.action}{' '}
-                                            <span className="font-medium">{activity.item}</span>
+                                    <div className={styles.activityContent}>
+                                        <p className={styles.activityText}>
+                                            <span className={styles.activityBold}>{activity.user}</span> {activity.action}{' '}
+                                            <span className={styles.activityBold}>{activity.item}</span>
                                         </p>
-                                        <p className="text-xs text-gray-500">{activity.time}</p>
+                                        <p className={styles.activityTime}>{activity.time}</p>
                                     </div>
                                 </div>
                             ))}
@@ -158,23 +159,22 @@ export function Dashboard() {
                 </Card>
 
                 {/* Upcoming Deadlines */}
-                <Card className="border-gray-200 shadow-sm">
+                <Card className={styles.statCard}>
                     <CardHeader>
                         <CardTitle>Upcoming Deadlines</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-4">
+                        <div className={styles.deadlineList}>
                             {upcomingDeadlines.map((deadline) => (
-                                <div key={deadline.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <div className="flex-1">
-                                        <p className="text-sm font-medium text-gray-900">{deadline.course}</p>
-                                        <p className="text-xs text-gray-500">{deadline.deadline}</p>
+                                <div key={deadline.id} className={styles.deadlineItem}>
+                                    <div className={styles.deadlineContent}>
+                                        <p className={styles.deadlineCourse}>{deadline.course}</p>
+                                        <p className={styles.deadlineDate}>{deadline.deadline}</p>
                                     </div>
-                                    <div className="flex items-center space-x-2">
-                                        <Badge variant={
-                                            deadline.priority === 'high' ? 'destructive' :
-                                                deadline.priority === 'medium' ? 'default' : 'secondary'
-                                        }>
+                                    <div className={styles.deadlineActions}>
+                                        <Badge className={`${styles.deadlineBadge} ${deadline.priority === 'high' ? styles.deadlineBadgeHigh :
+                                            deadline.priority === 'medium' ? styles.deadlineBadgeMedium : styles.deadlineBadgeLow
+                                            }`}>
                                             {deadline.daysLeft} days
                                         </Badge>
                                     </div>
@@ -185,27 +185,27 @@ export function Dashboard() {
                 </Card>
 
                 {/* Quick Actions */}
-                <Card className="border-gray-200 shadow-sm">
+                <Card className={styles.statCard}>
                     <CardHeader>
                         <CardTitle>Quick Actions</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid grid-cols-2 gap-3">
-                            <Button variant="outline" className="h-16 flex flex-col items-center justify-center space-y-1">
-                                <Plus className="w-5 h-5" />
-                                <span className="text-xs">New Course</span>
+                        <div className={styles.quickActionsGrid}>
+                            <Button variant="outline" className={styles.quickActionButton}>
+                                <Plus className={styles.quickActionIcon} />
+                                <span className={styles.quickActionText}>New Course</span>
                             </Button>
-                            <Button variant="outline" className="h-16 flex flex-col items-center justify-center space-y-1">
-                                <FileText className="w-5 h-5" />
-                                <span className="text-xs">Create Test</span>
+                            <Button variant="outline" className={styles.quickActionButton}>
+                                <FileText className={styles.quickActionIcon} />
+                                <span className={styles.quickActionText}>Create Test</span>
                             </Button>
-                            <Button variant="outline" className="h-16 flex flex-col items-center justify-center space-y-1">
-                                <Users className="w-5 h-5" />
-                                <span className="text-xs">Manage Users</span>
+                            <Button variant="outline" className={styles.quickActionButton}>
+                                <Users className={styles.quickActionIcon} />
+                                <span className={styles.quickActionText}>Manage Users</span>
                             </Button>
-                            <Button variant="outline" className="h-16 flex flex-col items-center justify-center space-y-1">
-                                <TrendingUp className="w-5 h-5" />
-                                <span className="text-xs">Analytics</span>
+                            <Button variant="outline" className={styles.quickActionButton}>
+                                <TrendingUp className={styles.quickActionIcon} />
+                                <span className={styles.quickActionText}>Analytics</span>
                             </Button>
                         </div>
                     </CardContent>
@@ -214,11 +214,11 @@ export function Dashboard() {
 
             {/* Popular Courses */}
             <div>
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold text-gray-900">Popular Courses</h2>
-                    <Button variant="outline">View All Courses</Button>
+                <div className={styles.sectionHeader}>
+                    <h2 className={styles.sectionTitle}>Popular Courses</h2>
+                    <Button variant="outline" className={styles.sectionButton}>View All Courses</Button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className={styles.coursesGrid}>
                     {recentCourses.map((course) => (
                         <CourseCard key={course.id} {...course} />
                     ))}

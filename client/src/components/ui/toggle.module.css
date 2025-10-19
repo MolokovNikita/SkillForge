@@ -1,0 +1,122 @@
+.toggleBase {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* gap-2 */
+    border-radius: 0.375rem;
+    /* rounded-md */
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 500;
+    /* font-medium */
+    white-space: nowrap;
+    /* whitespace-nowrap */
+    outline: none;
+    transition: color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    /* transition-[color,box-shadow] */
+    cursor: pointer;
+}
+
+.toggleBase:hover {
+    background-color: hsl(var(--muted));
+    /* hover:bg-muted */
+    color: hsl(var(--muted-foreground));
+    /* hover:text-muted-foreground */
+}
+
+.toggleBase:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.toggleBase[data-state="on"] {
+    background-color: hsl(var(--accent));
+    /* data-[state=on]:bg-accent */
+    color: hsl(var(--accent-foreground));
+    /* data-[state=on]:text-accent-foreground */
+}
+
+.toggleBase:focus-visible {
+    border-color: hsl(var(--ring));
+    /* focus-visible:border-ring */
+    box-shadow: 0 0 0 3px hsl(var(--ring) / 0.5);
+    /* focus-visible:ring-[3px] */
+}
+
+.toggleBase[aria-invalid="true"] {
+    border-color: hsl(var(--destructive));
+    /* aria-invalid:border-destructive */
+    box-shadow: 0 0 0 3px hsl(var(--destructive) / 0.2);
+    /* aria-invalid:ring-destructive/20 */
+}
+
+@media (prefers-color-scheme: dark) {
+    .toggleBase[aria-invalid="true"] {
+        box-shadow: 0 0 0 3px hsl(var(--destructive) / 0.4);
+        /* dark:aria-invalid:ring-destructive/40 */
+    }
+}
+
+.toggleBase svg {
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.toggleBase svg:not([class*='size-']) {
+    width: 1rem;
+    /* size-4 */
+    height: 1rem;
+    /* size-4 */
+}
+
+/* Variants */
+.toggleDefault {
+    background-color: transparent;
+    /* bg-transparent */
+}
+
+.toggleOutline {
+    border: 1px solid hsl(var(--input));
+    /* border border-input */
+    background-color: transparent;
+    /* bg-transparent */
+}
+
+.toggleOutline:hover {
+    background-color: hsl(var(--accent));
+    /* hover:bg-accent */
+    color: hsl(var(--accent-foreground));
+    /* hover:text-accent-foreground */
+}
+
+/* Sizes */
+.toggleSizeDefault {
+    height: 2.25rem;
+    /* h-9 */
+    padding-left: 0.5rem;
+    /* px-2 */
+    padding-right: 0.5rem;
+    min-width: 2.25rem;
+    /* min-w-9 */
+}
+
+.toggleSizeSm {
+    height: 2rem;
+    /* h-8 */
+    padding-left: 0.375rem;
+    /* px-1.5 */
+    padding-right: 0.375rem;
+    min-width: 2rem;
+    /* min-w-8 */
+}
+
+.toggleSizeLg {
+    height: 2.5rem;
+    /* h-10 */
+    padding-left: 0.625rem;
+    /* px-2.5 */
+    padding-right: 0.625rem;
+    min-width: 2.5rem;
+    /* min-w-10 */
+}

@@ -1,0 +1,68 @@
+.alert {
+    position: relative;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    display: grid;
+    grid-template-columns: 0 1fr;
+    gap: 0.125rem;
+    align-items: flex-start;
+}
+
+.alert:has(> svg) {
+    grid-template-columns: calc(var(--spacing) * 4) 1fr;
+    gap: 0.75rem 0.125rem;
+}
+
+.alert>svg {
+    width: 1rem;
+    height: 1rem;
+    transform: translateY(0.125rem);
+    color: currentColor;
+}
+
+.alertDefault {
+    background-color: #ffffff;
+    color: #111827;
+}
+
+.alertDestructive {
+    color: #dc2626;
+    background-color: #ffffff;
+}
+
+.alertDestructive>svg {
+    color: currentColor;
+}
+
+.alertDestructive *[data-slot="alert-description"] {
+    color: rgba(220, 38, 38, 0.9);
+}
+
+.alertTitle {
+    grid-column-start: 2;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    min-height: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+}
+
+.alertDescription {
+    color: #6b7280;
+    grid-column-start: 2;
+    display: grid;
+    justify-items: start;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+}
+
+.alertDescription p {
+    line-height: 1.625;
+}

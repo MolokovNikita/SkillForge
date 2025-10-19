@@ -4,6 +4,7 @@ import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 
 import { cn } from "./utils.ts";
+import styles from './chart.module.css';
 
 // Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
@@ -185,7 +186,7 @@ function ChartTooltipContent({
             )}
         >
             {!nestLabel ? tooltipLabel : null}
-            <div className="grid gap-1.5">
+            <div className={styles.chartTooltipContent}>
                 {payload.map((item: any, index: number) => {
                     const key = `${nameKey || item.name || item.dataKey || "value"}`;
                     const itemConfig = getPayloadConfigFromPayload(config, item, key);
@@ -233,14 +234,14 @@ function ChartTooltipContent({
                                             nestLabel ? "items-end" : "items-center",
                                         )}
                                     >
-                                        <div className="grid gap-1.5">
+                                        <div className={styles.chartTooltipContent}>
                                             {nestLabel ? tooltipLabel : null}
-                                            <span className="text-muted-foreground">
+                                            <span className={styles.chartTooltipLabel}>
                                                 {itemConfig?.label || item.name}
                                             </span>
                                         </div>
                                         {item.value && (
-                                            <span className="text-foreground font-mono font-medium tabular-nums">
+                                            <span className={styles.chartTooltipValue}>
                                                 {item.value.toLocaleString()}
                                             </span>
                                         )}
@@ -299,7 +300,7 @@ function ChartLegendContent({
                             <itemConfig.icon />
                         ) : (
                             <div
-                                className="h-2 w-2 shrink-0 rounded-[2px]"
+                                className={styles.chartLegendDot}
                                 style={{
                                     backgroundColor: item.color,
                                 }}

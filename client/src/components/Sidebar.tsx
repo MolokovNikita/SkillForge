@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Home,
   BookOpen,
@@ -7,9 +6,13 @@ import {
   BarChart3,
   Settings,
   ChevronLeft,
-  GraduationCap
+  GraduationCap,
+  Building2,
+  Shield
 } from 'lucide-react';
 import { Button } from './ui/button';
+import { useAuth } from '../contexts/AuthContext';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -18,16 +21,53 @@ interface SidebarProps {
   onItemClick: (item: string) => void;
 }
 
-const navigationItems = [
-  { id: 'dashboard', label: 'Dashboard', icon: Home },
-  { id: 'courses', label: 'Courses', icon: BookOpen },
-  { id: 'tests', label: 'Tests', icon: ClipboardList },
-  { id: 'employees', label: 'Employees', icon: Users },
-  { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-  { id: 'settings', label: 'Settings', icon: Settings },
-];
+const getNavigationItems = (role: string | null, t: (key: string) => string) => {
+  const baseItems = [
+    { id: 'dashboard', label: t('nav.dashboard'), icon: Home },
+    { id: 'courses', label: t('nav.courses'), icon: BookOpen },
+    { id: 'tests', label: t('nav.tests'), icon: ClipboardList },
+    { id: 'employees', label: t('nav.employees'), icon: Users },
+    { id: 'analytics', label: t('nav.analytics'), icon: BarChart3 },
+  ];
+
+  if (role === 'root_admin') {
+    return [
+      ...baseItems,
+      { id: 'companies', label: t('nav.companies'), icon: Building2 },
+      { id: 'system', label: t('nav.system'), icon: Shield },
+      { id: 'settings', label: t('nav.settings'), icon: Settings },
+    ];
+  }
+
+  return [
+    ...baseItems,
+    { id: 'settings', label: t('nav.settings'), icon: Settings },
+  ];
+};
 
 export function Sidebar({ collapsed, onToggle, activeItem, onItemClick }: SidebarProps) {
+  const { user, role } = useAuth();
+  const { t } = useLanguage();
+  const navigationItems = getNavigationItems(role, t);
+
+  const getRoleDisplayName = (role: string | null) => {
+    switch (role) {
+      case 'root_admin':
+        return t('roles.rootAdmin');
+      case 'company_admin':
+        return t('roles.companyAdmin');
+      case 'employee':
+        return t('roles.employee');
+      default:
+        return t('roles.user');
+    }
+  };
+
+  const getInitials = (name: string | undefined) => {
+    if (!name) return 'U';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  };
+
   return (
     <div className={`bg-white border-r border-gray-200 h-full flex flex-col transition-all duration-300 ${collapsed ? 'w-16' : 'w-60'
       }`}>
@@ -86,11 +126,17 @@ export function Sidebar({ collapsed, onToggle, activeItem, onItemClick }: Sideba
         <div className="p-4 border-t border-gray-200">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-sm font-medium text-gray-700">JD</span>
+              <span className="text-sm font-medium text-gray-700">
+                {getInitials(user?.full_name)}
+              </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">John Doe</p>
-              <p className="text-xs text-gray-500 truncate">Company Admin</p>
+              <p className="text-sm font-medium text-gray-900 truncate">
+                {user?.full_name || 'User'}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {getRoleDisplayName(role)}
+              </p>
             </div>
           </div>
         </div>
